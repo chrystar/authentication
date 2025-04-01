@@ -1,9 +1,11 @@
 import 'package:authentication/features/auth/login/views/login_screen.dart';
 import 'package:authentication/features/auth/quick_login/view/quick_login.dart';
 import 'package:authentication/features/auth/widgets.dart';
+import 'package:authentication/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../widgets/curveclipper.dart';
+import '../../../../widgets/textFieldWidget.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -13,6 +15,30 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> register() async {
+    final authProvider = AuthProvider();
+
+    try {
+      await authProvider.signUp(
+        _nameController.text,
+        _phoneNumberController.text,
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 const SizedBox(height: 60),
                 GestureDetector(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QuickLogin())),
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => QuickLogin())),
                   child: Row(
                     children: [
                       const Icon(Icons.arrow_back),
@@ -52,19 +79,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text('devrnz', style: TextStyle(fontSize: 24))),
                 // ... your form fields
                 const SizedBox(height: 50),
-                textFieldWidget(
-                    text: 'Username', hintText: 'Example@gmail.com'),
+                TextFieldWidget(
+                  text: 'Username',
+                  hintText: 'Example@gmail.com',
+                  controller: _nameController,
+                ),
                 SizedBox(height: 20),
-                textFieldWidget(
-                    text: 'Email id', hintText: 'Example@gmail.com'),
+                TextFieldWidget(
+                  text: 'Email id',
+                  hintText: 'Example@gmail.com',
+                  controller: _emailController,
+                ),
                 SizedBox(height: 20),
-                textFieldWidget(text: 'Password', hintText: "Enter password"),
+                TextFieldWidget(
+                  text: 'Password',
+                  hintText: "Enter password",
+                  controller: _passwordController,
+                ),
                 SizedBox(height: 30),
                 customButton(
                   text: 'Register',
                   gradientColor: LinearGradient(
                     colors: [Colors.orange.shade200, Colors.orange.shade700],
                   ),
+                  onPressed: register,
                 ),
               ],
             ),

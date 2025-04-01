@@ -1,30 +1,5 @@
 import 'package:flutter/material.dart';
 
-Widget textFieldWidget({required String text, required String hintText}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(height: 5),
-      TextFormField(
-        decoration: InputDecoration(
-          hintText: hintText,
-          border: InputBorder.none,
-          filled: true,
-          hintStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 14,
-          ),
-        ),
-      ),
-    ],
-  );
-}
 
 Widget customButton({
   required String text,
