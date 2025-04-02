@@ -20,11 +20,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
 
   Future<void> register() async {
     final authProvider = AuthProvider();
 
     try {
+      setState(() {
+        isLoading = true;
+      });
       await authProvider.signUp(
         _nameController.text,
         _phoneNumberController.text,
@@ -33,6 +37,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       rethrow;
     }
